@@ -13,10 +13,22 @@ const consoleOutput = document.getElementById('console')
 let codeWorker = null
 
 // Función para mostrar mensajes en la consola
+function showConsoleMessage(message, type = 'log') {
+  const div = document.createElement('div')
+  div.className = `console-${type}`
+  div.textContent = message
+  consoleOutput.appendChild(div)
+}
+
+// Función para mostrar mensajes en la consola (múltiples)
 function showConsoleMessages(logs) {
-  consoleOutput.innerHTML = logs
-    .map(log => `<div class="console-${log.type}">${log.content}</div>`)
-    .join('')
+  consoleOutput.innerHTML = ''
+  logs.forEach(log => {
+    const div = document.createElement('div')
+    div.className = `console-${log.type}`
+    div.textContent = log.content
+    consoleOutput.appendChild(div)
+  })
 }
 
 // Función para verificar la sintaxis del código
@@ -51,16 +63,19 @@ function initWorker() {
 
   // Manejar errores del worker
   codeWorker.onerror = (error) => {
-    showConsoleMessage(error.message, 'error')
+    showConsoleMessage(`Worker error: ${error.message}`, 'error')
   }
 }
 
 // Función para ejecutar el código
 function executeCode(code) {
+  // Limpiar la consola antes de ejecutar
+  consoleOutput.innerHTML = ''
+  
   // Verificar sintaxis
   const syntaxError = checkSyntax(code)
   if (syntaxError) {
-    showConsoleMessage(syntaxError, 'error')
+    showConsoleMessage(`Syntax Error: ${syntaxError}`, 'error')
     return
   }
 
@@ -69,19 +84,17 @@ function executeCode(code) {
     initWorker()
   }
 
-  // Enviar código al worker
-  codeWorker.postMessage(code)
+  try {
+    // Enviar código al worker
+    codeWorker.postMessage(code)
+  } catch (error) {
+    showConsoleMessage(`Error sending to worker: ${error.message}`, 'error')
+  }
 }
 
 // Escuchar cambios en el textarea
 let timeout = null
 codeTextarea.addEventListener('input', () => {
-  // Verificar sintaxis inmediatamente
-  const syntaxError = checkSyntax(codeTextarea.value)
-  if (syntaxError) {
-    showConsoleMessage(syntaxError, 'error')
-  }
-
   // Debounce para la ejecución
   clearTimeout(timeout)
   timeout = setTimeout(() => {
@@ -91,8 +104,13 @@ codeTextarea.addEventListener('input', () => {
     } else {
       consoleOutput.innerHTML = ''
     }
-  }, 200)
+  }, 300) // Aumentado ligeramente para dar más tiempo
 })
 
-// Inicializar el worker
-initWorker()
+// Ejecutar al iniciar para procesar cualquier código predeterminado
+window.addEventListener('DOMContentLoaded', () => {
+  initWorker()
+  if (codeTextarea.value.trim()) {
+    executeCode(codeTextarea.value.trim())
+  }
+})

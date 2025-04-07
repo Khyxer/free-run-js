@@ -34,7 +34,7 @@ self.onmessage = function(e) {
   logs.length = 0;
   
   try {
-    // Ejecutar el código en un contexto aislado
+    // Evaluar el código en un contexto aislado
     const result = new Function(e.data)();
     
     // Si no hay logs pero hay un resultado, agregarlo como log
@@ -51,12 +51,15 @@ self.onmessage = function(e) {
       logs: logs
     });
   } catch (error) {
+    // Asegurarnos de capturar y enviar el error
+    logs.push({
+      type: 'error',
+      content: `Error: ${error.message}`
+    });
+    
     self.postMessage({
       success: false,
-      logs: [{
-        type: 'error',
-        content: error.message
-      }]
+      logs: logs
     });
   }
 };

@@ -4,37 +4,6 @@ body {
   height: 100vh;
 }
 
-/* header {
-  min-height: 3%;
-  display: flex;
-  align-items: center;
-  padding: 0 10px;
-  background-color: #2b2d38;
-  border-bottom: 1px solid #646464;
-  justify-content: space-between;
-
-  h1 {
-    font-size: 16px;
-  }
-
-  .buttons {
-    display: flex;
-    align-items: center;
-
-    button {
-      background-color: transparent;
-      outline: none;
-      border: none;
-      cursor: pointer;
-      padding: 1px 10px;
-
-      &:hover{
-        background-color: #646464;
-      }
-    }
-  }
-} */
-
 .container {
   height: 100%;
   overflow: hidden;
