@@ -37,29 +37,26 @@ self.onmessage = function(e) {
     // Ejecutar el código en un contexto aislado
     const result = new Function(e.data)();
     
-    // Si hay logs, enviar el último
-    const lastLog = logs[logs.length - 1];
-    
-    // Si no hay logs pero hay un resultado, enviarlo
-    if (!lastLog && result !== undefined) {
+    // Si no hay logs pero hay un resultado, agregarlo como log
+    if (logs.length === 0 && result !== undefined) {
       logs.push({
         type: 'log',
         content: typeof result === 'object' ? JSON.stringify(result) : String(result)
       });
     }
     
-    // Enviar el resultado
+    // Enviar todos los logs
     self.postMessage({
       success: true,
-      log: logs[logs.length - 1] || { type: 'log', content: '' }
+      logs: logs
     });
   } catch (error) {
     self.postMessage({
       success: false,
-      log: {
+      logs: [{
         type: 'error',
         content: error.message
-      }
+      }]
     });
   }
 };

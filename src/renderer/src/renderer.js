@@ -13,8 +13,10 @@ const consoleOutput = document.getElementById('console')
 let codeWorker = null
 
 // Función para mostrar mensajes en la consola
-function showConsoleMessage(message, type = 'log') {
-  consoleOutput.innerHTML = `<div class="console-${type}">${message}</div>`
+function showConsoleMessages(logs) {
+  consoleOutput.innerHTML = logs
+    .map(log => `<div class="console-${log.type}">${log.content}</div>`)
+    .join('')
 }
 
 // Función para verificar la sintaxis del código
@@ -39,9 +41,11 @@ function initWorker() {
 
   // Manejar mensajes del worker
   codeWorker.onmessage = (e) => {
-    const { success, log } = e.data
-    if (log && log.content) {
-      showConsoleMessage(log.content, log.type)
+    const { success, logs } = e.data
+    if (logs && logs.length > 0) {
+      showConsoleMessages(logs)
+    } else {
+      consoleOutput.innerHTML = ''
     }
   }
 
