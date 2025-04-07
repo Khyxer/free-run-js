@@ -1,16 +1,53 @@
 import Split from 'split.js'
+import * as monaco from 'monaco-editor'
 
 // Inicializar Split.js para el panel dividido
 Split(['#split-0', '#split-1'], {
   gutterSize: 20
 })
 
+// Configurar el tema Dracula para Monaco Editor
+monaco.editor.defineTheme('dracula', {
+  base: 'vs-dark',
+  inherit: true,
+  rules: [
+    { token: 'comment', foreground: '6272A4' },
+    { token: 'string', foreground: 'F1FA8C' },
+    { token: 'keyword', foreground: 'FF79C6' },
+    { token: 'number', foreground: 'BD93F9' },
+    { token: 'operator', foreground: 'FF79C6' },
+    { token: 'function', foreground: '50FA7B' },
+  ],
+  colors: {
+    'editor.background': '#282A36',
+    'editor.foreground': '#F8F8F2',
+    'editor.lineHighlightBackground': '#44475A',
+    'editor.selectionBackground': '#44475A',
+    'editor.inactiveSelectionBackground': '#44475A70',
+  }
+})
+
 // Obtener referencias a los elementos
-const codeTextarea = document.getElementById('code')
+const codeContainer = document.getElementById('code')
 const consoleOutput = document.getElementById('console')
 
 // Crear el Web Worker
 let codeWorker = null
+
+// Inicializar Monaco Editor
+const editor = monaco.editor.create(codeContainer, {
+  value: '',
+  language: 'javascript',
+  theme: 'dracula',
+  minimap: { enabled: false },
+  automaticLayout: true,
+  fontSize: 14,
+  tabSize: 2,
+  scrollBeyondLastLine: false,
+  wordWrap: 'on',
+  suggestOnTriggerCharacters: true,
+  acceptSuggestionOnEnter: 'on',
+})
 
 // Función para mostrar mensajes en la consola
 function showConsoleMessage(message, type = 'log') {
@@ -92,25 +129,26 @@ function executeCode(code) {
   }
 }
 
-// Escuchar cambios en el textarea
+// Escuchar cambios en el editor
 let timeout = null
-codeTextarea.addEventListener('input', () => {
+editor.onDidChangeModelContent(() => {
   // Debounce para la ejecución
   clearTimeout(timeout)
   timeout = setTimeout(() => {
-    const code = codeTextarea.value.trim()
+    const code = editor.getValue().trim()
     if (code) {
       executeCode(code)
     } else {
       consoleOutput.innerHTML = ''
     }
-  }, 300) // Aumentado ligeramente para dar más tiempo
+  }, 300)
 })
 
 // Ejecutar al iniciar para procesar cualquier código predeterminado
 window.addEventListener('DOMContentLoaded', () => {
   initWorker()
-  if (codeTextarea.value.trim()) {
-    executeCode(codeTextarea.value.trim())
+  const initialCode = editor.getValue().trim()
+  if (initialCode) {
+    executeCode(initialCode)
   }
 })
