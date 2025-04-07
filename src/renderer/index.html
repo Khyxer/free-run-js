@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Free Run JS</title>
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"
+    />
+
+    <link href="./assets/main.css" type="text/css" rel="stylesheet" />
+
+    <script type="module" src="./src/renderer.js" defer></script>
+  </head>
+
+  <body>
+
+    <!-- <header>
+
+      <h1>Free Run JS</h1>
+
+      <div class="buttons">
+        <button>
+          <img src="./assets/svg/minimize.svg" alt="minimize" />
+        </button>
+        <button>
+          <img src="./assets/svg/window.svg" alt="window" />
+        </button>
+        <button>
+          <img src="./assets/svg/close.svg" alt="close" />
+        </button>
+      </div>
+
+    </header> -->
+
+    <div class="container" >
+
+      <div class="utils" >
+      </div>
+
+      <div class="split">
+        <div id="split-0">
+          <div class="content">
+            <textarea name="code" id="code"></textarea>
+          </div>
+        </div>
+        <div id="split-1">
+          <div class="content" id="console">
+            Hola
+          </div>
+        </div>
+    </div>
+  </body>
+</html>
