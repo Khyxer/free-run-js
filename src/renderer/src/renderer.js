@@ -16,14 +16,14 @@ monaco.editor.defineTheme('dracula', {
     { token: 'keyword', foreground: 'FF79C6' },
     { token: 'number', foreground: 'BD93F9' },
     { token: 'operator', foreground: 'FF79C6' },
-    { token: 'function', foreground: '50FA7B' },
+    { token: 'function', foreground: '50FA7B' }
   ],
   colors: {
     'editor.background': '#282A36',
     'editor.foreground': '#F8F8F2',
     'editor.lineHighlightBackground': '#44475A',
     'editor.selectionBackground': '#44475A',
-    'editor.inactiveSelectionBackground': '#44475A70',
+    'editor.inactiveSelectionBackground': '#44475A70'
   }
 })
 
@@ -41,12 +41,12 @@ const editor = monaco.editor.create(codeContainer, {
   theme: 'dracula',
   minimap: { enabled: false },
   automaticLayout: true,
-  fontSize: 14,
+  fontSize: 20,
   tabSize: 2,
   scrollBeyondLastLine: false,
   wordWrap: 'on',
   suggestOnTriggerCharacters: true,
-  acceptSuggestionOnEnter: 'on',
+  acceptSuggestionOnEnter: 'on'
 })
 
 // Función para mostrar mensajes en la consola
@@ -60,7 +60,7 @@ function showConsoleMessage(message, type = 'log') {
 // Función para mostrar mensajes en la consola (múltiples)
 function showConsoleMessages(logs) {
   consoleOutput.innerHTML = ''
-  logs.forEach(log => {
+  logs.forEach((log) => {
     const div = document.createElement('div')
     div.className = `console-${log.type}`
     div.textContent = log.content
@@ -108,7 +108,7 @@ function initWorker() {
 function executeCode(code) {
   // Limpiar la consola antes de ejecutar
   consoleOutput.innerHTML = ''
-  
+
   // Verificar sintaxis
   const syntaxError = checkSyntax(code)
   if (syntaxError) {
