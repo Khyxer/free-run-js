@@ -80,6 +80,28 @@ body {
       width: 100%;
       height: 100%;
       padding: 10px;
+      font-family: monospace;
+      overflow-y: auto;
+    }
+
+    #console .console-log {
+      color: var(--ev-c-text-1);
+      margin-bottom: 4px;
+    }
+
+    #console .console-error {
+      color: #ff5555;
+      margin-bottom: 4px;
+    }
+
+    #console .console-warn {
+      color: #ffb86c;
+      margin-bottom: 4px;
+    }
+
+    #console .console-info {
+      color: #8be9fd;
+      margin-bottom: 4px;
     }
 
     .gutter.gutter-horizontal {
