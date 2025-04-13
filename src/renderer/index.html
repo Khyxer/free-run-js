@@ -8,13 +8,78 @@
       http-equiv="Content-Security-Policy"
       content="default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"
     />
-
     <link href="./assets/main.css" type="text/css" rel="stylesheet" />
 
     <script type="module" src="./src/renderer.js" defer></script>
+    <script type="module" src="./src/actions.js" defer></script>
   </head>
 
   <body>
+    <header>
+      <div class="logo">
+        <img src="./assets/logo.webp" alt="Logo main" draggable="false" />
+        <h1>Free Run JS</h1>
+      </div>
+      <div class="buttons">
+        <!-- boton de minimizar la ventana-->
+        <div class="button" id="minimize-window">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-minus-icon lucide-minus"
+          >
+            <path d="M5 12h14" />
+          </svg>
+        </div>
+
+        <!-- boton de maximizar o poner en modo ventana-->
+        <div class="button" id="toggle-window">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-minimize-icon lucide-minimize"
+          >
+            <path d="M8 3v3a2 2 0 0 1-2 2H3" />
+            <path d="M21 8h-3a2 2 0 0 1-2-2V3" />
+            <path d="M3 16h3a2 2 0 0 1 2 2v3" />
+            <path d="M16 21v-3a2 2 0 0 1 2-2h3" />
+          </svg>
+        </div>
+
+        <!-- boton de cerrar la ventana-->
+        <div class="button" id="close-window">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-x-icon lucide-x"
+          >
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
+        </div>
+      </div>
+    </header>
     <!-- Barra lateral para utilidades -->
     <div class="container">
       <div class="utils">
@@ -112,7 +177,9 @@
           <div id="code" style="width: 100%; height: 100%"></div>
         </div>
         <div id="split-1">
-          <div class="content" id="console"></div>
+          <div id="console">
+            <h1 style="font-size: 80px; font-weight: 600;" >🚀Proximamente🦖</h1>
+          </div>
         </div>
       </div>
     </div>

@@ -8,6 +8,7 @@ function createWindow() {
   const mainWindow = new BrowserWindow({
     width: 900,
     height: 670,
+    frame: false,
     show: false,
     autoHideMenuBar: true,
     icon,
@@ -15,6 +16,42 @@ function createWindow() {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false
     }
+  })
+
+  mainWindow.on('maximize', () => {
+    mainWindow.webContents.send('window-state-change', true)
+  })
+
+  mainWindow.on('unmaximize', () => {
+    mainWindow.webContents.send('window-state-change', false)
+  })
+
+  // Configurar IPC para responder a consultas sobre el estado de la ventana
+  ipcMain.handle('is-window-maximized', () => {
+    return mainWindow.isMaximized()
+  })
+
+  ipcMain.handle('toggle-maximize-window', () => {
+    const mainWindow = BrowserWindow.getFocusedWindow()
+    if (!mainWindow) return
+
+    if (mainWindow.isMaximized()) {
+      mainWindow.unmaximize()
+    } else {
+      mainWindow.maximize()
+    }
+  })
+
+  ipcMain.handle('minimize-window', () => {
+    const mainWindow = BrowserWindow.getFocusedWindow()
+    if (!mainWindow) return
+    mainWindow.minimize()
+  })
+
+  ipcMain.handle('close-window', () => {
+    const mainWindow = BrowserWindow.getFocusedWindow()
+    if (!mainWindow) return
+    mainWindow.close()
   })
 
   mainWindow.on('ready-to-show', () => {
