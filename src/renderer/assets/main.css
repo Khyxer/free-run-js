@@ -13,6 +13,7 @@ header {
   display: flex;
   justify-content: space-between;
   user-select: none;
+  -webkit-app-region: drag;
 
   .logo {
     height: 100%;
@@ -35,6 +36,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
+    -webkit-app-region: no-drag;
 
     .button {
       width: 50px;
