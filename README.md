@@ -7,7 +7,7 @@
 ![Version](https://img.shields.io/badge/Version-1.0.0-blue)
 
 <div align="center">
-  <img src="./resources/preview-v1.png" alt="Free Run JS Screenshot" />
+  <img src="./resources/preview-v2.png" alt="Free Run JS Screenshot" />
   <p><em>V1.0.0 Run JavaScript code instantly without complicated setup</em></p>
 </div>
 
@@ -64,8 +64,7 @@ npm run dev
 ## 📷 Screenshots
 
 <div align="center">
-  <img src="./resources/preview-v1.png" alt="Light Mode" />
-  <img src="./resources/preview-v1.png" alt="Dark Mode" />
+  <img src="./resources/preview-v2.png" alt="Dark Mode" />
 </div>
 
 ## 🤝 Contributing
