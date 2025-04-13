@@ -4,11 +4,11 @@
 ![Electron](https://img.shields.io/badge/Electron-✓-blue)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow)
 ![License](https://img.shields.io/badge/License-MIT-green)
-![Version](https://img.shields.io/badge/Version-1.0.0-blue)
+![Version](https://img.shields.io/badge/Version-1.1.0-blue)
 
 <div align="center">
   <img src="./resources/preview-v2.png" alt="Free Run JS Screenshot" />
-  <p><em>V1.0.0 Run JavaScript code instantly without complicated setup</em></p>
+  <p><em>V1.1.0 Run JavaScript code instantly without complicated setup</em></p>
 </div>
 
 ## ✨ Features
