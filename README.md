@@ -87,7 +87,7 @@ This project uses electron-vite for optimal development workflow:
 
 ## 📜 License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Distributed under the [MIT License](./LICENSE). See `LICENSE` for more information.
 
 <div align="center">
   <p>Made by developers for developers</p>
