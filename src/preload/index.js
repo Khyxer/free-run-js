@@ -1,16 +1,35 @@
-import { contextBridge } from 'electron'
+import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
-// Custom APIs for renderer
-const api = {}
+// Define nuestras APIs personalizadas
+const api = {
+  // Función para obtener el estado de la ventana
+  isWindowMaximized: async () => {
+    return await ipcRenderer.invoke('is-window-maximized')
+  },
+  onWindowStateChange: (callback) => {
+    ipcRenderer.on('window-state-change', (_, isMaximized) => {
+      callback(isMaximized)
+    })
+  },
 
-// Use `contextBridge` APIs to expose Electron APIs to
-// renderer only if context isolation is enabled, otherwise
-// just add to the DOM global.
+  // Nuevas funciones para controlar la ventana
+  toggleMaximizeWindow: () => {
+    ipcRenderer.invoke('toggle-maximize-window')
+  },
+  minimizeWindow: () => {
+    ipcRenderer.invoke('minimize-window')
+  },
+  closeWindow: () => {
+    ipcRenderer.invoke('close-window')
+  }
+}
+
+// Usa `contextBridge` para exponer APIs a renderer
 if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld('electron', electronAPI)
-    contextBridge.exposeInMainWorld('api', api)
+    contextBridge.exposeInMainWorld('api', api) // Exponer como api en lugar de electronAPI
   } catch (error) {
     console.error(error)
   }
