@@ -12,6 +12,7 @@ header {
   height: 30px;
   display: flex;
   justify-content: space-between;
+  user-select: none;
 
   .logo {
     height: 100%;
