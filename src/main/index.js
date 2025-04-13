@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
@@ -6,8 +7,10 @@ import icon from '../../resources/logo-free-run-js.png?asset'
 function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 900,
-    height: 670,
+    width: 1200,
+    height: 700,
+    minWidth: 1200,
+    minHeight: 700,
     frame: false,
     show: false,
     autoHideMenuBar: true,
