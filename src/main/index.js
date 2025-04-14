@@ -13,7 +13,10 @@ function createWindow() {
     minHeight: 700,
     frame: false,
     show: false,
+    webSecurity: false,
     autoHideMenuBar: true,
+    nodeIntegration: true,
+    contextIsolation: false,
     icon,
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
