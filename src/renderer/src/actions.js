@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 // En tu archivo JavaScript del frontend (renderer)
 const $toggleWindow = document.getElementById('toggle-window')
 const $minimizeWindow = document.getElementById('minimize-window')
