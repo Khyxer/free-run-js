@@ -1,4 +1,5 @@
 @import './base.css';
+@import './modales.css';
 
 body {
   height: 100vh;
@@ -8,7 +9,7 @@ body {
   color: var(--color-text);
 }
 
-header {
+.header-main {
   height: 30px;
   display: flex;
   justify-content: space-between;
