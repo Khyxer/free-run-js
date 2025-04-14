@@ -65,6 +65,7 @@ npm run dev
 
 <div align="center">
   <img src="./resources/preview-v2.png" alt="Dark Mode" />
+  <img src="./resources/preview-modal.png" alt="Modals" />
 </div>
 
 ## 🤝 Contributing
