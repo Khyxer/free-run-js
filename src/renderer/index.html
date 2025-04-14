@@ -12,10 +12,12 @@
 
     <script type="module" src="./src/renderer.js" defer></script>
     <script type="module" src="./src/actions.js" defer></script>
+    <script type="module" src="./src/modales.js" defer></script>
   </head>
 
   <body>
-    <header>
+    <!-- Barra de titulo -->
+    <header class="header-main">
       <div class="logo">
         <img src="./assets/logo.webp" alt="Logo main" draggable="false" />
         <h1>Free Run JS</h1>
@@ -80,13 +82,15 @@
         </div>
       </div>
     </header>
-    <!-- Barra lateral para utilidades -->
+
+    <!-- Contenedor principal -->
     <div class="container">
+      <!-- Barra lateral para utilidades -->
       <div class="utils">
         <!-- utils header-->
         <div>
           <!-- Ejecutar codigo -->
-          <div class="icon">
+          <div class="icon" id="run-button">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -105,7 +109,7 @@
           </div>
 
           <!-- Detener codigo -->
-          <div class="icon">
+          <div class="icon" id="stop-button">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="22"
@@ -124,7 +128,7 @@
           </div>
 
           <!-- Temas del editor -->
-          <div class="icon">
+          <div class="icon" data-modal-target="modal-themes">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -149,7 +153,7 @@
           </div>
 
           <!-- Ajustes del editor -->
-          <div class="icon">
+          <div class="icon" data-modal-target="modal-config">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -174,7 +178,7 @@
         <!-- utils footer -->
         <div>
           <!-- Boton de ayuda -->
-          <div class="icon">
+          <div class="icon" data-modal-target="modal-help">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -217,18 +221,191 @@
         </div>
       </div>
 
-      <!-- Contenedor principal -->
+      <!-- Codigo y consola -->
       <div class="split">
         <!-- Contenedor del codigo. El div con el id split-0 es para que funcione correctamente el split -->
         <div id="split-0">
           <div id="code" style="width: 100%; height: 100%"></div>
         </div>
+
+        <!-- Contenedor de la consola -->
         <div id="split-1">
           <div id="console">
-            <h1 style="font-size: 80px; font-weight: 600">🚀Proximamente🦖</h1>
+            <h1 style="font-size: 80px; font-weight: 600"></h1>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- Modales -->
+    <!-- Modal 1: Temas -->
+    <main class="modal-overlay" id="modal-themes">
+      <div class="modal">
+        <header class="modal-header">
+          <div>
+            <h2>Select Editor Theme</h2>
+            <p>Choose a theme for your code editor from our collection.</p>
+          </div>
+          <button class="btn-close" data-close-modal>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-x-icon lucide-x"
+            >
+              <path d="M18 6 6 18" />
+              <path d="m6 6 12 12" />
+            </svg>
+          </button>
+        </header>
+        <div class="search">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-search-icon lucide-search"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.3-4.3" />
+          </svg>
+          <input type="text" placeholder="Search for a theme..." id="theme-search" />
+        </div>
+        <section class="modal-body">
+          <div class="card">
+            <h4>SynthWave 84</h4>
+            <p>Dark Theme</p>
+            <div>
+              <img src="./assets/themes/synthwave84.webp" alt="SynthWave 84 theme" />
+            </div>
+          </div>
+          <div class="card">
+            <h4>Dracula</h4>
+            <p>Dark Theme</p>
+            <div>
+              <img src="./assets/themes/dracula.webp" alt="Dracula theme" />
+            </div>
+          </div>
+          <div class="card">
+            <h4>VS Code Dark</h4>
+            <p>Dark Theme</p>
+            <div>
+              <img src="./assets/themes/vscode-dark.webp" alt="Vs code dark theme" />
+            </div>
+          </div>
+          <div class="card">
+            <h4>XCode Light</h4>
+            <p>Light Theme</p>
+            <div>
+              <img src="./assets/themes/xcode-light.webp" alt="XCode Light theme" />
+            </div>
+          </div>
+          <div class="card">
+            <h4>Coldark Cold</h4>
+            <p>Light Theme</p>
+            <div>
+              <img src="./assets/themes/colddark-cold.webp" alt="Coldark Cold theme" />
+            </div>
+          </div>
+        </section>
+        <footer class="modal-footer">
+          <button class="btn btn-secondary" data-close-modal>Cerrar</button>
+          <button class="btn btn-primary">Apply Theme</button>
+        </footer>
+      </div>
+    </main>
+
+    <!-- Modal 2: Configuracion -->
+    <main class="modal-overlay" id="modal-config">
+      <div class="modal">
+        <header class="modal-header">
+          <div>
+            <h2>Config</h2>
+            <p>Choose a theme for your code editor from our collection.</p>
+          </div>
+          <button class="btn-close" data-close-modal>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-x-icon lucide-x"
+            >
+              <path d="M18 6 6 18" />
+              <path d="m6 6 12 12" />
+            </svg>
+          </button>
+        </header>
+        <section class="modal-body">
+          <div class="card">
+            <h4>Editor Font Size</h4>
+            <p>Change the font size of the editor.</p>
+            <div>
+              <input type="number" id="font-size" value="16" min="10" max="30" />
+            </div>
+          </div>
+          <div class="card">
+            <h4>Editor Line Height</h4>
+            <p>Change the line height of the editor.</p>
+            <div>
+              <input type="number" id="line-height" value="1.5" min="1" max="3" step="0.1" />
+            </div>
+          </div>
+        </section>
+        <footer class="modal-footer">
+          <button class="btn btn-secondary" data-close-modal>Cerrar</button>
+          <button class="btn btn-primary">Apply Config</button>
+        </footer>
+      </div>
+    </main>
+
+    <!-- Modal 3: Ayuda -->
+    <main class="modal-overlay" id="modal-help">
+      <div class="modal">
+        <header class="modal-header">
+          <div>
+            <h2>Help</h2>
+            <p>Choose a theme for your code editor from our collection.</p>
+          </div>
+          <button class="btn-close" data-close-modal>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-x-icon lucide-x"
+            >
+              <path d="M18 6 6 18" />
+              <path d="m6 6 12 12" />
+            </svg>
+          </button>
+        </header>
+        <section class="modal-body"></section>
+        <footer class="modal-footer" style="justify-content: end">
+          <button class="btn btn-primary">Accept</button>
+        </footer>
+      </div>
+    </main>
   </body>
 </html>
