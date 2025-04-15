@@ -168,7 +168,7 @@ editor.onDidChangeModelContent(() => {
     clearTimeout(executeTimer)
   }
 
-  executeTimer = setTimeout(executeCode, 800)
+  executeTimer = setTimeout(executeCode, 400)
 
   // Limpiar el temporizador de guardado anterior
   if (saveTimer) {
