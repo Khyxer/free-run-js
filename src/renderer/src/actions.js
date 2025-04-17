@@ -52,7 +52,6 @@ async function initWindowState() {
 
 // Escuchar cambios en el estado de maximización
 window.api.onWindowStateChange((isMaximized) => {
-  console.log('Estado de ventana cambiado:', isMaximized ? 'Maximizada' : 'No maximizada')
   updateToggleIcon(isMaximized)
 })
 
