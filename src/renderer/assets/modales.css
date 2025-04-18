@@ -1,5 +1,9 @@
 @import './base.css';
 
+:root{
+  --color-main-modal-color: #6800df
+}
+
 /* Estilos del modal */
 .modal-overlay {
   position: fixed;
@@ -101,7 +105,7 @@
   &:has(input:focus) {
     box-shadow:
       0 0 0 2px #111827,
-      0 0 0 4px rgba(146, 59, 246, 0.5);
+      0 0 0 4px var(--color-main-modal-color);
   }
 }
 
@@ -123,7 +127,7 @@
     cursor: pointer;
 
     &:hover {
-      border: 1px solid #6800df;
+      border: 1px solid var(--color-main-modal-color);
       background-color: #6800df08;
     }
 
@@ -162,7 +166,7 @@
     font-weight: 500;
   }
   .btn-primary {
-    background-color: #4800bb;
+    background-color: var(--color-main-modal-color);
     border: none;
 
     &:hover {
@@ -178,4 +182,23 @@
       background-color: #e5e5e510;
     }
   }
+}
+
+/* modal de temas */
+
+.card-theme.selected {
+  border: 1px solid var(--color-main-modal-color);
+  transition: all 0.3s ease;
+
+  /* &::after{
+    content: '✔';
+    text-align: center;
+    width: 30px;
+    height: 30px;
+    background-color: #6800df;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border-radius: 60px; 
+  } */
 }
