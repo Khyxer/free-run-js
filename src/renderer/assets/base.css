@@ -1,9 +1,5 @@
 :root {
-  --color-background: var(--ev-c-black);
-  --color-background-soft: var(--ev-c-black-soft);
-  --color-background-mute: var(--ev-c-black-mute);
-
-  --color-background-soft: #262335;
+  --color-background: #262335;
 
   --color-text: #e0e0e0;
 }
