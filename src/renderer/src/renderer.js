@@ -14,7 +14,7 @@ const consoleOutput = document.getElementById('console')
 const STORAGE_KEY = 'editor_code'
 
 const setupConsoleRedirect = () => {
-  //div para los mensajes en la consola por aparte por si algun dia cambio la ui y quiero añadir algun boton o algo asi del lado de la consola
+  //div para los mensajes en la consola por aparte por si algun dia cambio la ui y quiero añadir algun boto n o algo asi del lado de la consola
   if (!consoleOutput.querySelector('.console-messages')) {
     const messagesContainer = document.createElement('div')
     messagesContainer.className = 'console-messages'
@@ -79,7 +79,7 @@ const setupConsoleRedirect = () => {
     consoleMessages.scrollTop = consoleMessages.scrollHeight
 
     // debug
-    // originalConsole[type](...args)
+    originalConsole[type](...args)
   }
 
   // Sobrescribir los métodos de la consola
@@ -95,12 +95,14 @@ const getSavedCode = () => {
   return savedCode || ''
 }
 
+// Recuperar el tema
+const theme = localStorage.getItem('theme') || 'synthwave84'
+
 // Inicializar Monaco Editor
 const editor = monaco.editor.create(codeContainer, {
   value: getSavedCode(),
   language: 'javascript',
-  // theme: localStorage.getItem('theme') || editorThemes.synthwave84,
-  theme: editorThemes.synthwave84,
+  theme: theme,
   minimap: { enabled: false },
   automaticLayout: true,
   fontSize: 20,
