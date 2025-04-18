@@ -1,4 +1,5 @@
 /* eslint-disable */
+import * as monaco from 'monaco-editor'
 
 function inicializarModales() {
   // Botones que abren modales
@@ -55,3 +56,50 @@ function cerrarModal(id) {
 }
 
 inicializarModales()
+
+//recuperar el tema del localStorage y aplicarlo al editor
+
+function changeEditorTheme(themeId) {
+  monaco.editor.setTheme(themeId)
+
+  const themeBackgrounds = {
+    dracula: '#282A36',
+    monokai: '#272822',
+    synthwave84: '#262335',
+    vscodeDark: '#1E1E1E',
+    xcodeLight: '#FFFFFF',
+    coldarkCold: '#E3E9F2'
+  }
+
+  const backgroundColor = themeBackgrounds[themeId] || '#262335'
+  document.documentElement.style.setProperty('--color-background', backgroundColor)
+
+  localStorage.setItem('theme', themeId)
+}
+
+let selectedTheme = localStorage.getItem('theme') || 'synthwave84'
+const getThemes = document.querySelectorAll('.card-theme')
+const applyTheme = document.getElementById('apply-theme')
+
+getThemes.forEach((theme) => {
+  if (selectedTheme === theme.id) {
+    theme.classList.add('selected')
+  }
+  theme.addEventListener('click', () => {
+    selectedTheme = theme.id
+    getThemes.forEach((t) => {
+      t.classList.remove('selected')
+    })
+    theme.classList.add('selected')
+  })
+})
+
+applyTheme.addEventListener('click', () => {
+  changeEditorTheme(selectedTheme)
+  cerrarModal('modal-themes')
+})
+
+document.addEventListener('DOMContentLoaded', () => {
+  const savedTheme = localStorage.getItem('theme') || 'synthwave84'
+  changeEditorTheme(savedTheme)
+})
