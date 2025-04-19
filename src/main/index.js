@@ -7,6 +7,7 @@ import icon from '../../resources/logo-free-run-js.png?asset'
 function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
+    title: 'Free Run JS',
     width: 1200,
     height: 700,
     minWidth: 1200,

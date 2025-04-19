@@ -41,8 +41,7 @@
       "output": "dist"
     },
     "win": {
-      "icon": "build/icon.ico",
-      "fileDescription": "Free Run JS"
+      "icon": "build/icon.ico"
     },
     "mac": {
       "icon": "build/icon.icns"
