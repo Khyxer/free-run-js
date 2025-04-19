@@ -4,7 +4,7 @@
 ![Electron](https://img.shields.io/badge/Electron-✓-blue)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow)
 ![License](https://img.shields.io/badge/License-MIT-green)
-![Version](https://img.shields.io/badge/Version-1.2.0-blue)
+![Version](https://img.shields.io/badge/Version-2.0.0-blue)
 
 <p align="center">
   <img src="./resources/logo-run-js.webp" width="200" alt="Free Run JS Logo">
@@ -12,7 +12,7 @@
 
 <div align="center">
   <img src="./resources/preview-v3.png" alt="Free Run JS Screenshot" />
-  <p><em>V1.2.0 Run JavaScript code instantly without complicated setup</em></p>
+  <p><em>v2.0.0 Run JavaScript code instantly without complicated setup</em></p>
 </div>
 
 ## ✨ Features
@@ -57,7 +57,7 @@ npm run build:linux
 npm run build:mac
 ```
 
-Then check the Dist folder and run the installer `Free-Run-js-1.2.0.exe`
+Then check the Dist folder and run the installer `Free-Run-js-2.0.0.exe`
 
 ## 🛠️ Technologies
 
