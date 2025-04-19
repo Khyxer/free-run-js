@@ -3,18 +3,184 @@ import Split from 'split.js'
 import * as monaco from 'monaco-editor'
 import { editorThemes } from './themes.js'
 
-// Inicializar Split.js para el panel dividido
-Split(['#split-0', '#split-1'], {
-  gutterSize: 20
-})
+// Detectar el tema antes de cualquier otra inicialización
+const savedTheme = localStorage.getItem('theme') || 'synthwave84'
+const loadingScreen = document.getElementById('loading-screen')
 
+const THEME_BACKGROUNDS = {
+  dracula: '#282A36',
+  monokai: '#272822',
+  synthwave84: '#262335',
+  vscodeDark: '#1E1E1E',
+  xcodeLight: '#FFFFFF',
+  coldarkCold: '#E3E9F2'
+}
+const backgroundColor = THEME_BACKGROUNDS[savedTheme] || THEME_BACKGROUNDS['synthwave84']
+if (loadingScreen) {
+  loadingScreen.style.backgroundColor = backgroundColor
+  // Ajustar el color del texto en caso de temas claros
+  if (savedTheme === 'xcodeLight' || savedTheme === 'coldarkCold') {
+    const loadingText = loadingScreen.querySelector('.loading-text')
+    if (loadingText) {
+      loadingText.style.color = '#333333'
+    }
+    const loadingSpinner = loadingScreen.querySelector('.loading-spinner')
+    if (loadingSpinner) {
+      loadingSpinner.style.borderTop = '5px solid #333333'
+    }
+  }
+}
+
+// Constantes
+const STORAGE_KEY = 'editor_code'
+const DEFAULT_THEME = 'synthwave84'
+const DEFAULT_SETTINGS = {
+  fontSize: 20,
+  tabSize: 2,
+  wrap: true,
+  lineNumbers: true,
+  miniMap: false
+}
+
+// Referencias DOM
 const codeContainer = document.getElementById('code')
 const consoleOutput = document.getElementById('console')
 
-const STORAGE_KEY = 'editor_code'
+/**
+ * Inicializa el entorno del editor
+ */
+function initializeEditor() {
+  // Inicializar Split.js para el panel dividido
+  Split(['#split-0', '#split-1'], {
+    gutterSize: 20
+  })
 
-const setupConsoleRedirect = () => {
-  //div para los mensajes en la consola por aparte por si algun dia cambio la ui y quiero añadir algun boto n o algo asi del lado de la consola
+  // Configurar redirección de consola
+  setupConsoleRedirect()
+
+  // Obtener configuraciones guardadas
+  const savedCode = getSavedCode()
+  const theme = localStorage.getItem('theme') || DEFAULT_THEME
+  const userSettings = getEditorSettings()
+
+  // Inicializar Monaco Editor
+  const editor = createEditor(savedCode, theme, userSettings)
+
+  // Inicializar el worker de Monaco
+  setupMonacoWorker()
+
+  // Ejecutar el código inicialmente tras cargar
+  setTimeout(() => executeCode(editor), 500)
+
+  // Establecer eventos de cambio en el editor
+  setupEditorEvents(editor)
+
+  // Guardar antes de cerrar la aplicación
+  window.addEventListener('beforeunload', () => saveCode(editor))
+
+  // Ocultar la pantalla de carga cuando todo está listo
+  hideLoadingScreen()
+
+  // Retornar la instancia del editor para uso externo
+  return editor
+}
+
+/**
+ * Oculta la pantalla de carga con una animación suave
+ */
+function hideLoadingScreen() {
+  if (loadingScreen) {
+    // Primeramente hacer una transición suave
+    loadingScreen.style.opacity = '0'
+    loadingScreen.style.pointerEvents = 'none' // Desactivar eventos para evitar interacciones durante la transición
+
+    // Después de la transición, ocultar completamente
+    setTimeout(() => {
+      loadingScreen.style.display = 'none'
+    }, 300) // Este tiempo debe coincidir con la duración de la transición CSS
+  }
+}
+
+/**
+ * Recupera configuraciones del editor desde localStorage
+ */
+function getEditorSettings() {
+  try {
+    const settingsJson = localStorage.getItem('settings')
+    if (!settingsJson) return DEFAULT_SETTINGS
+
+    const userSettings = JSON.parse(settingsJson)
+    return {
+      fontSize: userSettings.fontSize || DEFAULT_SETTINGS.fontSize,
+      tabSize: userSettings.tabSize || DEFAULT_SETTINGS.tabSize,
+      wrap: userSettings.wrap !== undefined ? userSettings.wrap : DEFAULT_SETTINGS.wrap,
+      lineNumbers:
+        userSettings.lineNumbers !== undefined
+          ? userSettings.lineNumbers
+          : DEFAULT_SETTINGS.lineNumbers,
+      miniMap: userSettings.miniMap !== undefined ? userSettings.miniMap : DEFAULT_SETTINGS.miniMap
+    }
+  } catch (error) {
+    console.error('Error parsing settings:', error)
+    return DEFAULT_SETTINGS
+  }
+}
+
+/**
+ * Recupera el código guardado en localStorage
+ */
+function getSavedCode() {
+  return localStorage.getItem(STORAGE_KEY) || ''
+}
+
+/**
+ * Crea una instancia del editor Monaco
+ */
+function createEditor(savedCode, theme, settings) {
+  return monaco.editor.create(codeContainer, {
+    value: savedCode,
+    language: 'javascript',
+    theme: theme,
+    minimap: { enabled: settings.miniMap },
+    automaticLayout: true,
+    fontSize: settings.fontSize,
+    tabSize: settings.tabSize,
+    scrollBeyondLastLine: false,
+    wordWrap: settings.wrap ? 'on' : 'off',
+    lineNumbers: settings.lineNumbers ? 'on' : 'off',
+    suggestOnTriggerCharacters: true,
+    acceptSuggestionOnEnter: 'on',
+    lineNumbersMinChars: 3,
+    scrollbar: {
+      verticalScrollbarSize: 0
+    }
+  })
+}
+
+/**
+ * Configura el worker de Monaco
+ */
+function setupMonacoWorker() {
+  self.MonacoEnvironment = {
+    getWorker(_, label) {
+      if (label === 'javascript' || label === 'typescript') {
+        return new Worker(
+          new URL('monaco-editor/esm/vs/language/typescript/ts.worker.js', import.meta.url),
+          { type: 'module' }
+        )
+      }
+      return new Worker(new URL('monaco-editor/esm/vs/editor/editor.worker.js', import.meta.url), {
+        type: 'module'
+      })
+    }
+  }
+}
+
+/**
+ * Configura la redirección de la consola
+ */
+function setupConsoleRedirect() {
+  // Crear contenedor para mensajes si no existe
   if (!consoleOutput.querySelector('.console-messages')) {
     const messagesContainer = document.createElement('div')
     messagesContainer.className = 'console-messages'
@@ -28,6 +194,7 @@ const setupConsoleRedirect = () => {
 
   const consoleMessages = consoleOutput.querySelector('.console-messages')
 
+  // Guardar métodos originales de la consola
   const originalConsole = {
     log: console.log,
     error: console.error,
@@ -35,6 +202,9 @@ const setupConsoleRedirect = () => {
     info: console.info
   }
 
+  /**
+   * Formatea un valor para mostrarlo en la consola
+   */
   const formatValue = (value) => {
     if (value === null) return 'null'
     if (value === undefined) return 'undefined'
@@ -51,25 +221,22 @@ const setupConsoleRedirect = () => {
     return String(value)
   }
 
-  // agregar el mensaje a la consola
+  /**
+   * Añade un mensaje a la consola visual
+   */
   const appendToConsole = (type, ...args) => {
     const message = document.createElement('div')
     message.className = `console-${type}`
 
     // Aplicar estilos según el tipo de mensaje
-    switch (type) {
-      case 'error':
-        message.style.color = '#ff5555'
-        break
-      case 'warn':
-        message.style.color = '#ffb86c'
-        break
-      case 'info':
-        message.style.color = '#8be9fd'
-        break
-      default:
-        message.style.color = '#72F1B8'
+    const colors = {
+      error: '#ff5555',
+      warn: '#ffb86c',
+      info: '#8be9fd',
+      log: '#72F1B8'
     }
+
+    message.style.color = colors[type] || colors.log
 
     // Formatear y mostrar todos los argumentos
     const formattedArgs = args.map(formatValue).join(' ')
@@ -78,7 +245,7 @@ const setupConsoleRedirect = () => {
     consoleMessages.appendChild(message)
     consoleMessages.scrollTop = consoleMessages.scrollHeight
 
-    // debug
+    // Mantener el log en la consola del navegador para debug
     originalConsole[type](...args)
   }
 
@@ -89,64 +256,19 @@ const setupConsoleRedirect = () => {
   console.info = (...args) => appendToConsole('info', ...args)
 }
 
-// Recuperar el código guardado en localStorage o usar un valor por defecto
-const getSavedCode = () => {
-  const savedCode = localStorage.getItem(STORAGE_KEY)
-  return savedCode || ''
-}
-
-// Recuperar el tema
-const theme = localStorage.getItem('theme') || 'synthwave84'
-
-// Inicializar Monaco Editor
-const editor = monaco.editor.create(codeContainer, {
-  value: getSavedCode(),
-  language: 'javascript',
-  theme: theme,
-  minimap: { enabled: false },
-  automaticLayout: true,
-  fontSize: 20,
-  tabSize: 2,
-  scrollBeyondLastLine: false,
-  wordWrap: 'on',
-  suggestOnTriggerCharacters: true,
-  acceptSuggestionOnEnter: 'on',
-  lineNumbersMinChars: 3,
-  scrollbar: {
-    verticalScrollbarSize: 0
-  }
-})
-
-// Inicializar el worker de Monaco
-self.MonacoEnvironment = {
-  getWorker(_, label) {
-    if (label === 'javascript' || label === 'typescript') {
-      return new Worker(
-        new URL('monaco-editor/esm/vs/language/typescript/ts.worker.js', import.meta.url),
-        { type: 'module' }
-      )
-    }
-    return new Worker(new URL('monaco-editor/esm/vs/editor/editor.worker.js', import.meta.url), {
-      type: 'module'
-    })
-  }
-}
-
-// Configurar la consola
-setupConsoleRedirect()
-
-// temporizadores de ejecutado y guardado
-let executeTimer = null
-let saveTimer = null
-
-const saveCode = () => {
+/**
+ * Guarda el código en localStorage
+ */
+function saveCode(editor) {
   const code = editor.getValue()
   localStorage.setItem(STORAGE_KEY, code)
 }
 
-// ejecutar el codigo
-const executeCode = () => {
-  //limpiar el historial
+/**
+ * Ejecuta el código del editor
+ */
+function executeCode(editor) {
+  // Limpiar el historial de la consola
   const consoleMessages = consoleOutput.querySelector('.console-messages')
   consoleMessages.innerHTML = ''
 
@@ -160,25 +282,36 @@ const executeCode = () => {
   }
 }
 
-// Ejecutar el código inicialmente tras cargar
-setTimeout(executeCode, 500)
+/**
+ * Configura eventos en el editor
+ */
+function setupEditorEvents(editor) {
+  let executeTimer = null
+  let saveTimer = null
 
-// esccuchar cambios en el editor para ejecutar el codigo
-editor.onDidChangeModelContent(() => {
-  // Limpiar el temporizador de ejecución anterior
-  if (executeTimer) {
-    clearTimeout(executeTimer)
-  }
+  editor.onDidChangeModelContent(() => {
+    // Limpiar el temporizador de ejecución anterior
+    if (executeTimer) {
+      clearTimeout(executeTimer)
+    }
 
-  executeTimer = setTimeout(executeCode, 400)
+    executeTimer = setTimeout(() => executeCode(editor), 400)
 
-  // Limpiar el temporizador de guardado anterior
-  if (saveTimer) {
-    clearTimeout(saveTimer)
-  }
+    // Limpiar el temporizador de guardado anterior
+    if (saveTimer) {
+      clearTimeout(saveTimer)
+    }
 
-  saveTimer = setTimeout(saveCode, 300)
-})
+    saveTimer = setTimeout(() => saveCode(editor), 300)
+  })
+}
 
-//Guardar antes de cerrar la apliación
-window.addEventListener('beforeunload', saveCode)
+// Inicializar el editor cuando se carga el documento
+// Aseguramos que todas las configuraciones se carguen antes
+// de inicializar el editor
+const editorInstance = initializeEditor()
+
+// Exportar la instancia para uso en otros archivos
+
+// Exportar la instancia del editor para uso en otros archivos
+export default editorInstance
