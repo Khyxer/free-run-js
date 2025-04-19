@@ -16,6 +16,10 @@
   </head>
 
   <body>
+    <!-- Pantalla de carga -->
+    <div id="loading-screen" class="loading-screen">
+      <div class="loading-spinner"></div>
+    </div>
     <!-- Barra de titulo -->
     <header class="header-main">
       <div class="logo">
@@ -86,9 +90,9 @@
     <!-- Contenedor principal -->
     <div class="container">
       <!-- Barra lateral para utilidades -->
-      <div class="utils">
+      <aside class="utils">
         <!-- utils header-->
-        <div>
+        <header>
           <!-- Ejecutar codigo -->
           <div class="icon" id="run-button">
             <svg
@@ -173,7 +177,7 @@
             </svg>
             <span>Settings</span>
           </div>
-        </div>
+        </header>
 
         <!-- utils footer -->
         <div>
@@ -219,7 +223,7 @@
             <span>Github</span>
           </div>
         </div>
-      </div>
+      </aside>
 
       <!-- Codigo y consola -->
       <div class="split">
@@ -282,7 +286,7 @@
           </svg>
           <input type="text" placeholder="Search for a theme..." id="theme-search" />
         </div>
-        <section class="modal-body">
+        <section class="modal-body modal-theme">
           <!-- Tema 1 -->
 
           <div class="card card-theme" id="synthwave84">
@@ -334,8 +338,8 @@
           </div>
         </section>
         <footer class="modal-footer">
-          <button class="btn btn-secondary" data-close-modal>Cerrar</button>
-          <button class="btn btn-primary" id="apply-theme" >Apply Theme</button>
+          <button class="btn btn-secondary" data-close-modal>Close</button>
+          <button class="btn btn-primary" id="apply-theme">Apply Theme</button>
         </footer>
       </div>
     </main>
@@ -345,8 +349,8 @@
       <div class="modal">
         <header class="modal-header">
           <div>
-            <h2>Config</h2>
-            <p>Choose a theme for your code editor from our collection.</p>
+            <h2>Settings</h2>
+            <p>Customize your code editor experience with these settings.</p>
           </div>
           <button class="btn-close" data-close-modal>
             <svg
@@ -366,27 +370,57 @@
             </svg>
           </button>
         </header>
-        <section class="modal-body">
-          <!-- <div class="card">
-            <h4>Editor Font Size</h4>
-            <p>Change the font size of the editor.</p>
-            <div>
-              <input type="number" id="font-size" value="16" min="10" max="30" />
+
+        <!-- Comienza la info del settings modal -->
+
+        <section class="modal-body modal-settings">
+          <!-- ajustes de rango -->
+
+          <div class="range-options">
+            <div class="card-settings">
+              <p id="font-size-preview">Font Size: 20px</p>
+              <input type="range" id="font-size-input" min="10" max="30" step="1" value="20" />
+            </div>
+            <div class="card-settings">
+              <p id="tab-size-preview">Tab Size: 2</p>
+              <input type="range" id="tab-size-input" min="1" max="10" step="1" value="2" />
             </div>
           </div>
-          <div class="card">
-            <h4>Editor Line Height</h4>
-            <p>Change the line height of the editor.</p>
-            <div>
-              <input type="number" id="line-height" value="1.5" min="1" max="3" step="0.1" />
-            </div>
-          </div> -->
 
-          <!-- creo que lo que causa lag es el input por alguna razon -->
+          <!-- ajustes booleanos -->
+
+          <div class="card-select">
+            <p>Line Numbers</p>
+            <label class="switch">
+              <input type="checkbox" id="line-input" />
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="card-select">
+            <p>Wrap Text</p>
+            <label class="switch">
+              <input type="checkbox" id="wrap-input" />
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="card-select">
+            <p>Show MiniMap</p>
+            <label class="switch">
+              <input type="checkbox" id="minimap-input" />
+              <span class="slider"></span>
+            </label>
+          </div>
         </section>
+
         <footer class="modal-footer">
-          <button class="btn btn-secondary" data-close-modal>Cerrar</button>
-          <button class="btn btn-primary">Apply Config</button>
+          <button class="btn btn-secondary" data-close-modal>Cancel</button>
+
+          <div>
+            <button class="btn btn-secondary" id="restore-settings">Reset settings</button>
+            <button class="btn btn-primary" id="apply-settings">Accept</button>
+          </div>
         </footer>
       </div>
     </main>
