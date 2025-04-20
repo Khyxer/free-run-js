@@ -16,14 +16,13 @@ function createWindow() {
     show: false,
     webSecurity: false,
     autoHideMenuBar: true,
-    nodeIntegration: true,
-    contextIsolation: false,
     icon,
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false
     }
   })
+
 
   mainWindow.on('maximize', () => {
     mainWindow.webContents.send('window-state-change', true)
