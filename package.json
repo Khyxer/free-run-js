@@ -2,7 +2,7 @@
   "name": "free-run-js",
   "productName": "Free Run JS",
   "version": "2.0.0",
-  "description": "A minimal Electron application with JavaScript",
+  "description": "Free Run JS",
   "main": "./out/main/index.js",
   "author": "example.com",
   "homepage": "https://electron-vite.org",
