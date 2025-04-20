@@ -15,6 +15,7 @@ const THEME_BACKGROUNDS = {
   xcodeLight: '#FFFFFF',
   coldarkCold: '#E3E9F2'
 }
+
 const backgroundColor = THEME_BACKGROUNDS[savedTheme] || THEME_BACKGROUNDS['synthwave84']
 if (loadingScreen) {
   loadingScreen.style.backgroundColor = backgroundColor
