@@ -18,14 +18,11 @@
 ## ✨ Features
 
 - **Instant execution** - Write and run JavaScript code with a single click
+- **User customization** - Customize the editor to your liking
 - **Split interface** - Editor and output console in the same window thanks to Split.js
 - **No external dependencies** - Everything you need is included
 - **Smart autocompletion** - Code suggestions as you type
 - **Cross-platform** - Available for Windows, macOS, and Linux
-
-## 🚀✨ Thoughtful Features
-- **Customizable themes** - Light/dark mode and more customization options
-- **Code export** - Save your snippets for future use
 
 ## 🚀 Installation
 
@@ -72,6 +69,9 @@ Then check the Dist folder and run the installer `Free-Run-js-2.0.0.exe`
 1. **Write** your JavaScript code in the top panel
 2. **Run** your code runs automatically after a short delay
 3. **View** look at the results in the console on the right
+
+## 🌐 Website
+[Official Website](https://freerunjs.vercel.app/)
 
 ## 📷 Screenshots
 
